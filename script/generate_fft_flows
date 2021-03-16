@@ -1,0 +1,38 @@
+#!/bin/bash -i
+
+code_path=$1
+data_path=$2
+write_path=$3
+pkt_window=$4
+get_class=$5
+
+if [ $get_class -eq "1"];
+then
+	for class in 0 1;
+	do
+		if [ $class -eq "1" ];
+		then
+			for name in $(ls $data_path"/attack");
+			do
+				echo "processing file "$name
+				python $code_path/pkt2csv.py $data_path/attack/$name $write_path/$name"time.csv" 1 
+			done;
+		
+		
+		
+		elif [ $class -eq "0" ] 
+		then
+			for name in $(ls $data_path"/normal");
+			do
+				echo "processing file "$name
+				python $code_path/pkt2csv.py $data_path/normal/$name $write_path/$name"-time.csv" -1 
+			done;
+		fi
+	done;
+fi
+	
+for name in $(ls $write_path);
+do
+	echo "calculating fft of file "$name
+        python $code_path/time2fft.py $write_path/$name $write_path/$name"-window_size-"$pkt_window"-fft.csv" $pkt_window
+done;

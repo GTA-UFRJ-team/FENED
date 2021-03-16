@@ -1,0 +1,31 @@
+#!/bin/bash -i
+
+code_path=$1
+data_path=$2
+write_path=$3
+pkt_window=$4
+class=$5
+
+if [ $class -eq "1" ];
+then
+	for name in $(ls $data_path"/attack");
+	do
+		echo "processing file "$name
+		python $code_path/pkt2csv.py $data_path/attack/$name $write_path/$name"-window_size-"$pkt_window".csv" $pkt_window 1 
+	done;
+
+
+
+elif [ $class -eq "0" ] 
+then
+	for name in $(ls $data_path"/normal");
+	do
+		echo "processing file "$name
+		python $code_path/pkt2csv.py $data_path/normal/$name $write_path/$name"-window_size-"$pkt_window".csv" $pkt_window -1 
+	done;
+
+else
+	echo "no class found"
+fi
+
+

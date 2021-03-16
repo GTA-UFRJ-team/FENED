@@ -1,0 +1,15 @@
+#!/bin/bash -i
+
+code_path=$1
+data_path=$2
+write_path=$3
+
+for name in $(ls $data_path);
+do
+	echo "processing file "$name
+	python3.7 $code_path/pkt2csv.py $data_path/$name $write_path/$name"-time.csv"  
+done;
+	
+	
+	
+	
